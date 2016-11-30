@@ -30,6 +30,7 @@ d3.json("./lib/world.topojson", function(data){
     .scale(100);
 
   var path = d3.geoPath().projection(projection);
+    var path2 = d3.geoPath().projection(projection);
 
   var Af_x;
 
@@ -39,17 +40,49 @@ d3.json("./lib/world.topojson", function(data){
     .append("path")
     .attr("class", function(d){
       if(d.properties.name=="Afghanistan"){
+        console.log(d);
         // console.log("");
       }
-      return d.properties.name;
+      var nam = d.properties.name;
+      nam = nam.replace(/\s+/g, "").replace(\.,"");
+      console.log(nam);
+      return nam;
     })
     .attr("fill", "steelblue")
-    .attr("d", path);
+    .attr("d", path)
+    .on("click", function(a,b,c){
+      svg.selectAll("path")
+      .attr("fill", "steelblue");
+      svg.selectAll("path."+a.properties.name.replace(/\s+/g, "").replace(\.,""))
+      .attr("fill",function(d){
+        console.log(d);
+        return "black";
+      });
+      console.log(a.properties.name);
+    });
 
-    console.log(topojson(data));
-
-
-
+  // jajaja.datum(function(d){
+  //   var coord = d.geometry.coordinates[0][0]
+  //   svg.append("circle")
+  //     .attr("transform", function(d){ return "translate(" + projection(coord) + ")";})
+  //     .attr("r", 2);
+  // });
+// console.log("x");
+//   var jajaje = svg.selectAll("path")
+//     .data(world.features)
+//     .enter()
+//     .append("path")
+//     .attr("class", function(d){
+//       if(d.properties.name=="Afghanistan"){
+//         console.log("x");
+//         // console.log("");
+//       }
+//       console.log("vvv")
+//       return "vvv";
+//     })
+//     .attr("fill", "red")
+//     .attr("d", path2);
+console.log("y")
   var circle = svg.append("circle")
                   .attr("cx", 439.37)
                   .attr("cy", 316.49)
