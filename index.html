@@ -13,18 +13,20 @@
 var width = 2500;
 var height = 640;
 var svg = d3.select("body").append("svg")
-  .attr("width", width)
-  .attr("height", height);
+  .attr("width",
+ width)
+  .attr("height",
+ height);
 var p = d3.select("body p");
 
 
 
-d3.json("./lib/world.topojson", function(data){
-
-  var world = topojson.feature(data, data.objects.world);
+d3.json("./lib/world.topojson",function(data){
+  var world = topojson.feature(data,
+ data.objects.world);
 
   var projection = d3.geoMercator()
-    .center([0, 34])
+    .center([0,34])
     .translate([350, 320])
     .rotate([-10, 0])
     .scale(100);
@@ -34,45 +36,55 @@ d3.json("./lib/world.topojson", function(data){
 
   var Af_x;
 
+  console.log(data);
   var jajaja = svg.selectAll("path")
     .data(world.features)
     .enter()
     .append("path")
-    .attr("class", function(d){
+    .attr("class",
+ function(d){
+   console.log(d);
       if(d.properties.name=="Afghanistan"){
         console.log(d);
         // console.log("");
       }
       var nam = d.properties.name;
-      nam = nam.replace(/\s+/g, "").replace(\.,"");
-      console.log(nam);
+      nam = nam.replace(/\s+/g,"");
+      // console.log(nam);
       return nam;
     })
-    .attr("fill", "steelblue")
+    .attr("fill","steelblue")
     .attr("d", path)
-    .on("click", function(a,b,c){
+    .on("click",function(a,b,c){
       svg.selectAll("path")
-      .attr("fill", "steelblue");
-      svg.selectAll("path."+a.properties.name.replace(/\s+/g, "").replace(\.,""))
-      .attr("fill",function(d){
+      .attr("fill",
+ "steelblue");
+      svg.selectAll("path."+a.properties.name.replace(/\s+/g,
+ ""))
+      .attr("fill", function(d){
         console.log(d);
-        return "black";
+        // return "black";
       });
-      console.log(a.properties.name);
+      // console.log(a.properties.name);
     });
 
-  // jajaja.datum(function(d){
-  //   var coord = d.geometry.coordinates[0][0]
-  //   svg.append("circle")
-  //     .attr("transform", function(d){ return "translate(" + projection(coord) + ")";})
-  //     .attr("r", 2);
-  // });
+  jajaja.datum(function(d){
+    console.log(d);
+    var coord = d.geometry.coordinates;
+    var x = x + coord[0].forEach
+    svg.append("circle")
+      .attr("transform",
+ function(d){ return "translate(" + projection(coord) + ")";})
+      .attr("r",
+ 2);
+  });
 // console.log("x");
 //   var jajaje = svg.selectAll("path")
 //     .data(world.features)
 //     .enter()
 //     .append("path")
-//     .attr("class", function(d){
+//     .attr("class",
+ // function(d){
 //       if(d.properties.name=="Afghanistan"){
 //         console.log("x");
 //         // console.log("");
@@ -80,14 +92,20 @@ d3.json("./lib/world.topojson", function(data){
 //       console.log("vvv")
 //       return "vvv";
 //     })
-//     .attr("fill", "red")
-//     .attr("d", path2);
-console.log("y")
-  var circle = svg.append("circle")
-                  .attr("cx", 439.37)
-                  .attr("cy", 316.49)
-                  .attr("r", 1)
-                  .attr("fill", "steelblue");
+//     .attr("fill",
+ // "red")
+//     .attr("d",
+//  path2);
+// console.log("y")
+//   var circle = svg.append("circle")
+//                   .attr("cx",
+//  439.37)
+//                   .attr("cy",
+//  316.49)
+//                   .attr("r",
+//  1)
+//                   .attr("fill",
+//  "steelblue");
 });
 
 
