@@ -26,9 +26,18 @@ d3.json("./lib/world.topojson",function(data){
  data.objects.world);
 
   var projection = d3.geoMercator()
+<<<<<<< HEAD
     .center([0,34])
     .translate([350, 320])
     .rotate([-10, 0])
+=======
+    .center([0,
+ 34])
+    .translate([350,
+ 320])
+    .rotate([-10,
+ 0])
+>>>>>>> e151f94c02b7b9f35952efbd2b58181b4a0ae858
     .scale(100);
 
   var path = d3.geoPath().projection(projection);
@@ -53,15 +62,31 @@ d3.json("./lib/world.topojson",function(data){
       // console.log(nam);
       return nam;
     })
+<<<<<<< HEAD
     .attr("fill","steelblue")
     .attr("d", path)
     .on("click",function(a,b,c){
+=======
+    .attr("fill",
+ "steelblue")
+    .attr("d",
+ path)
+    .on("click",
+ function(a,
+b,
+c){
+>>>>>>> e151f94c02b7b9f35952efbd2b58181b4a0ae858
       svg.selectAll("path")
       .attr("fill",
  "steelblue");
       svg.selectAll("path."+a.properties.name.replace(/\s+/g,
  ""))
+<<<<<<< HEAD
       .attr("fill", function(d){
+=======
+      .attr("fill",
+function(d){
+>>>>>>> e151f94c02b7b9f35952efbd2b58181b4a0ae858
         console.log(d);
         // return "black";
       });
@@ -70,8 +95,12 @@ d3.json("./lib/world.topojson",function(data){
 
   jajaja.datum(function(d){
     console.log(d);
+<<<<<<< HEAD
     var coord = d.geometry.coordinates;
     var x = x + coord[0].forEach
+=======
+    var coord = d.geometry.coordinates[0][0]
+>>>>>>> e151f94c02b7b9f35952efbd2b58181b4a0ae858
     svg.append("circle")
       .attr("transform",
  function(d){ return "translate(" + projection(coord) + ")";})
