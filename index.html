@@ -71,10 +71,23 @@ d3.json("./lib/world.topojson",function(data){
   jajaja.datum(function(d){
     console.log(d);
     var coord = d.geometry.coordinates;
-    var x = x + coord[0].forEach
+    var x=0;
+    var y=0;
+    var i = 0;
+    coord[0].forEach(function(a){
+        x = x + a[0];
+        y = y + a[1];
+        i = i+1;
+    });
+    x = x/i;
+    y = y/i;
+    var arr = [];
+    arr.push(x);
+    arr.push(y);
+    console.log(arr);
     svg.append("circle")
       .attr("transform",
- function(d){ return "translate(" + projection(coord) + ")";})
+ function(d){ return "translate(" + projection(arr) + ")";})
       .attr("r",
  2);
   });
