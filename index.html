@@ -41,28 +41,24 @@ d3.json("./lib/world.topojson",function(data){
     .data(world.features)
     .enter()
     .append("path")
-    .attr("class",
- function(d){
-   console.log(d);
+    .attr("class", function(d){
       if(d.properties.name=="Afghanistan"){
         console.log(d);
         // console.log("");
       }
       var nam = d.properties.name;
-      nam = nam.replace(/\s+/g,"");
-      // console.log(nam);
       return nam;
     })
     .attr("fill","steelblue")
     .attr("d", path)
     .on("click",function(a,b,c){
       svg.selectAll("path")
-      .attr("fill",
- "steelblue");
-      svg.selectAll("path."+a.properties.name.replace(/\s+/g,
- ""))
-      .attr("fill", function(d){
+      .attr("fill", "steelblue");
+      console.log(a);
+      svg.selectAll("path."+a.properties.name)
+      .attr("fill",function(d){
         console.log(d);
+        return "black";
         // return "black";
       });
       // console.log(a.properties.name);
@@ -84,12 +80,28 @@ d3.json("./lib/world.topojson",function(data){
     var arr = [];
     arr.push(x);
     arr.push(y);
+    if(isNaN(arr[0])){
+      x = 0;
+      y = 0;
+      i = 0;
+      coord[0][0].forEach(function(a){
+        x = x + a[0];
+        y = y+ a[1];
+        i = i+1;
+      });
+      x = x/i;
+      y = y/i;
+      arr.splice(0,arr.length);
+      arr.push(x);
+      arr.push(y);
+    }
     console.log(arr);
     svg.append("circle")
       .attr("transform",
  function(d){ return "translate(" + projection(arr) + ")";})
       .attr("r",
  2);
+return d;
   });
 // console.log("x");
 //   var jajaje = svg.selectAll("path")
