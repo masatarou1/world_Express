@@ -8,89 +8,88 @@
         <script src="./lib/jquery.js" charset="utf-8"></script>
     </head>
 <body>
-<p></p>
 <script type="text/javascript">
-console.log($(window).height());
-var width = $(window).width() * 0.98;
-var height = $(window).height() * 0.95;
-var svg = d3.select("body").append("svg")
-  .attr("width",
- width)
-  .attr("height",
- height);
-var p = d3.select("body p");
 
+// $(window) is jquery function
+  var width = $(window).width() * 0.98;
+  var height = $(window).height() * 0.95;
 
+  var svg = d3.select("body").append("svg")
+              .attr("width",width)
+              .attr("height",height);
+// project world map
+  d3.json("./lib/world.topojson",function(data){
 
-d3.json("./lib/world.topojson",function(data){
-  var world = topojson.feature(data,
- data.objects.world);
-var degree = -10;
-  var projection = d3.geoMercator()
-    .center([0,34])
-    .translate([width/2, height/2])
-    .rotate([degree, 0])
-    .scale(100);
+    var degree = -10;
+    var world = topojson.feature(data, data.objects.world);
+    var projection = d3.geoMercator()
+                        .center([0,34])
+                        .translate([width/2, height/2])
+                        .rotate([degree, 0])
+                        .scale(100);
 
-  var path = d3.geoPath().projection(projection);
-    var path2 = d3.geoPath().projection(projection);
+    var path = d3.geoPath().projection(projection);
+//    var path2 = d3.geoPath().projection(projection);
 
-  var Af_x;
-
-  // console.log(data);
-  var jajaja = svg.selectAll("path")
-    .data(world.features)
-    .enter()
-    .append("path")
-    .attr("class", function(d){
-      if(d.properties.name=="Afghanistan"){
-        // console.log(d);
-        // console.log("");
-      }
-      var nam = d.properties.name;
-      return nam;
-    })
-    .attr("fill","steelblue")
-    .attr("d", path)
-    .on("click",function(a,b,c){
-      svg.selectAll("path")
-      .attr("fill", "steelblue");
-      // console.log(a);
-      svg.selectAll("path."+a.properties.name)
-      .attr("fill",function(d){
-        // console.log(d);
-        return "black";
-        // return "black";
-      });
-      // console.log(a.properties.name);
+    var world_path = svg.selectAll("path")
+                    .data(world.features)
+                    .enter()
+                    .append("path")
+                    .attr("class", function(d){
+                      return d.properties.name;
+                    })
+                    .attr("fill","steelblue")
+                    .attr("d", path)
+                    .on("click", change_color);
+// rotate the map
+    d3.timer(function(){
+      svg.selectAll("circle").remove();
+      projection.rotate([degree, 0]);
+      degree = degree + 0.1;
+      world_path.attr("d", path);
+      world_path.datum(make_cir);
     });
 
-    console.log(path.centroid(svg.selectAll(".Afghanistan").datum().geometry));
+// zoom
+    svg.call(d3.zoom().scaleExtent([1/2, 8]).on("zoom", zoomed));
 
 
+// change color of the selected country
+  function change_color(d){
 
-  d3.timer(function(){
-    svg.selectAll("circle").remove();
-    projection.rotate([degree, 0]);
-    degree = degree + 0.1;
-    jajaja.attr("d", path);
-    jajaja.datum(make_cir);
-  });
-  svg.call(d3.zoom()
-          .scaleExtent([1/2, 8]).on("zoom", zoomed));
+    // put back the color
+          svg.selectAll("path")
+              .attr("fill", "steelblue");
+
+    // change color of the selected country
+          svg.selectAll("path."+a.properties.name)
+              .attr("fill", "black");
+  }
+
+// draw the circle
   function make_cir(d){
-    var arr = path.centroid(d.geometry);
-    svg.append("circle")
-      .attr("class", function(c){
-        return "ci_" + d.properties.name;
-      })
-      .attr("transform", function(d){ return "translate(" + arr + ")";})
-      .attr("r",2);
-    return d;
-  }
+
+    // arr is the center of the country.
+      var arr = path.centroid(d.geometry);
+
+      svg.append("circle")
+          .attr("class", function(c){
+            return "ci_" + d.properties.name;
+          })
+          .attr("transform", function(d){ return "translate(" + arr + ")";})
+          .attr("r",2);
+
+// return back d inorder not to change binded data.
+          return d;
+        }
+
+// zoom function
   function zoomed(){
-    jajaja.attr("transform", d3.event.transform);
+    world_path.attr("transform", d3.event.transform);
   }
+
+/* 以下気にしないでください */
+
 // console.log("x");
 //   var jajaje = svg.selectAll("path")
 //     .data(world.features)
@@ -119,6 +118,7 @@ var degree = -10;
 //  1)
 //                   .attr("fill",
 //  "steelblue");
+
 });
 
 
